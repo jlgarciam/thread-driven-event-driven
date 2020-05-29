@@ -1,0 +1,55 @@
+version: "3"
+
+services:
+  late-request:
+    build: ./late-request/
+    container_name: late-request
+    image: late-request
+    ports:
+      - "${LATE_REQUEST_PORT}:${LATE_REQUEST_PORT}"
+    networks:
+      - late-request
+    environment:
+      LATE_REQUEST_PORT: ${LATE_REQUEST_PORT}
+
+  late-request-consumer-node:
+    build: ./late-request-node-consumer/
+    container_name: late-request-node-consumer
+    image: late-request-node-consumer
+    ports:
+      - "${LATE_REQUEST_NODE_CONSUMER_PORT}:${LATE_REQUEST_NODE_CONSUMER_PORT}"
+    networks:
+      - late-request
+    environment:
+      LATE_REQUEST_NODE_CONSUMER_PORT: ${LATE_REQUEST_NODE_CONSUMER_PORT}
+      LATE_REQUEST_PORT: ${LATE_REQUEST_PORT}
+
+  late-request-rest-consumer:
+    build: ./late-request-rest-consumer/
+    container_name: late-request-rest-consumer
+    image: late-request-rest-consumer
+    ports:
+      - "${LATE_REQUEST_REST_CONSUMER_PORT}:${LATE_REQUEST_REST_CONSUMER_PORT}"
+    networks:
+      - late-request
+    environment:
+      LATE_REQUEST_REST_CONSUMER_PORT: ${LATE_REQUEST_REST_CONSUMER_PORT}
+      LATE_REQUEST_PORT: ${LATE_REQUEST_PORT}
+      TOMCAT_MAX_THREADS: ${TOMCAT_MAX_THREADS}
+
+  late-request-reactive-consumer:
+    build: ./late-request-reactive-consumer/
+    container_name: late-request-reactive-consumer
+    image: late-request-reactive-consumer
+    ports:
+      - "${LATE_REQUEST_REACTIVE_CONSUMER_PORT}:${LATE_REQUEST_REACTIVE_CONSUMER_PORT}"
+    networks:
+      - late-request
+    environment:
+      LATE_REQUEST_REACTIVE_CONSUMER_PORT: ${LATE_REQUEST_REACTIVE_CONSUMER_PORT}
+      LATE_REQUEST_PORT: ${LATE_REQUEST_PORT}
+      IO_WORKER_COUNT: ${IO_WORKER_COUNT}
+
+networks:
+  late-request:
+    driver: bridge
